@@ -416,6 +416,57 @@ function isMirror(root1: TreeNode | null, root2: TreeNode | null) : boolean{
     return false;
 };
 
+function maxDepth(root: TreeNode | null): number {
+    if (root == null)
+        return 0;
+    const leftDepth : number = maxDepth(root.left);
+    const rightDepth : number = maxDepth(root.right);
+    if (leftDepth > rightDepth)
+        return (leftDepth + 1);
+    else
+        return (rightDepth + 1);
+};
+
+function isBalanced(root: TreeNode | null): boolean {
+    if(root == null || root.val == null) return true;
+    return isBalancedRecursive(root) > 0;
+}
+function isBalancedRecursive(root: TreeNode | null) : number {
+    if (root == null)return 0;
+    const lh : number= isBalancedRecursive(root.left);
+    if (lh == -1) return -1;
+    const rh : number = isBalancedRecursive(root.right);
+    if (rh == -1) return -1;
+    if (Math.abs(lh - rh) > 1) return -1;
+    else return Math.max(lh, rh) + 1;
+};
+
+function minDepth(root: TreeNode | null): number {
+    if (root == null) return 0;
+    if (root.left == null && root.right == null) return 1;
+    if (root.left == null) return minDepth(root.right) + 1;
+    if (root.right == null) return minDepth(root.left) + 1;
+    return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
+};
+
+function hasPathSum(root: TreeNode | null, targetSum: number): boolean {
+    if (root == null) return false;
+    let ans : boolean= false;
+    const subSum : number = targetSum - root.val;
+    if (subSum == 0 && root.left == null && root.right == null) return (ans = true);
+    if (root.left != null){
+        ans = ans || hasPathSum(root.left, subSum);
+    }
+    if (root.right != null){
+        ans = ans || hasPathSum(root.right, subSum);
+    }
+    return ans;
+};
+
+
+
+
+
 
 
 
