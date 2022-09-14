@@ -1,3 +1,4 @@
+// CLASSES
 class ListNode {
     val: number
     next: ListNode | null
@@ -5,7 +6,8 @@ class ListNode {
              this.val = (val===undefined ? 0 : val)
             this.next = (next===undefined ? null : next)
     }
-}
+};
+
 class TreeNode {
     val: number
     left: TreeNode | null
@@ -15,7 +17,10 @@ class TreeNode {
         this.left = (left===undefined ? null : left)
         this.right = (right===undefined ? null : right)
     }
-}
+};
+
+//Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+// You may assume that each input would have exactly one solution, and you may not use the same element twice.
 function twoSum(nums: number[], target: number): number[] {
     const solution: number[] = [];
     for(let int = 0; int < nums.length; int ++){
@@ -29,6 +34,8 @@ function twoSum(nums: number[], target: number): number[] {
     return solution
 };
 
+//Given an integer x, return true if x is palindrome integer.
+// An integer is a palindrome when it reads the same backward as forward.
 function isPalindrome(x: number): boolean {
     const numberInString : String = String(x);
     if(numberInString.length == 1) return true
@@ -40,6 +47,7 @@ function isPalindrome(x: number): boolean {
     return true;
 };
 
+//Given a roman numeral, convert it to an integer
 function romanToInt(s: string): number {
     let finalNumber : number = 0;
     const possibleNumbers : number[] = [];
@@ -49,29 +57,28 @@ function romanToInt(s: string): number {
             possibleNumbers.push(newNumber);
         }else{
             const length = possibleNumbers.length;
-            if(possibleNumbers[length -1] == newNumber){
+            if(possibleNumbers[length - 1] == newNumber){
                 possibleNumbers.push(newNumber);
             }else if(possibleNumbers[length -1] > newNumber){
-                for(let i: number = 0; i < length; i ++){
-                    finalNumber = finalNumber + possibleNumbers.pop();
-                }
+                possibleNumbers.forEach(num => {
+                    finalNumber = finalNumber + num;
+                });
+                possibleNumbers.splice(0, possibleNumbers.length);
                 possibleNumbers.push(newNumber);
             }else{
                 finalNumber = finalNumber + (newNumber - possibleNumbers.pop());
             }
         }
     }
-    if(possibleNumbers.length == 0){
-        return finalNumber;
-    }else{
-        const length = possibleNumbers.length;
-        for(let i: number = 0; i < length; i ++){
-            finalNumber = finalNumber + possibleNumbers.pop();
-        }
-        return finalNumber;
+    if(possibleNumbers.length != 0){
+        possibleNumbers.forEach(num => {
+            finalNumber = finalNumber + num;
+        });
     }
+    return finalNumber;
 
 };
+
 function converTo(s: string) : number {
     if(s == 'I') return 1;
     if(s == 'V') return 5;
@@ -83,40 +90,34 @@ function converTo(s: string) : number {
     return 0;
 }
 
+//Write a function to find the longest common prefix string amongst an array of strings.
+// If there is no common prefix, return an empty string ""
 function longestCommonPrefix(strs: string[]): string {
     const min: number = minLength(strs);
     let commonPrefix = "";
     for(let i: number= 0; i < min; i ++){
-        let charPrefix = "";
-        for(let n : number = 0; n < strs.length; n ++){
-            if(n == 0){
-                charPrefix = strs[n].charAt(i);
-            }else{
-                if(charPrefix != strs[n].charAt(i)){
-                    return commonPrefix;
-                }
-            }
-        }
-        commonPrefix = commonPrefix.concat(charPrefix);
+        const newChar = strs[0].charAt(i);
+        strs.forEach(str => {
+            if(newChar != str.charAt(i)) return commonPrefix;
+        });
+        commonPrefix = commonPrefix.concat(newChar);
     }
     return commonPrefix
 };
 
 function minLength(s: string[]) : number {
-    let minLength = 0;
-    for(let i : number = 0; i < s.length; i ++){
-        if(i == 0){
-            minLength = s[i].length;
-        }else{
-            if(minLength > s[i].length){
-                minLength = s[i].length;
-            }
+    let minLength = s[0].length;
+    s.forEach(str => {
+        if(minLength > str.length){
+            minLength = str.length;
         }
-    }
+    });
     return minLength;
 }
 
-
+//You are given the heads of two sorted linked lists list1 and list2.
+// Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+// Return the head of the merged linked list.
 function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
     const numbers : number[] = [];
     if(list2 == null || list2.val == null){
@@ -163,6 +164,7 @@ function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode
     return finalList;
 };
 
+//Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The relative order of the elements may be changed.
 function removeElement(nums: number[], val: number): number {
       for(let i : number = 0; i < nums.length; i ++){
         if(nums[i] == val){
@@ -188,6 +190,8 @@ function num_to_replace(nums: number[], val:number, index: number): number{
 
 };
 
+//Given a sorted array of distinct integers and a target value,
+// return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 function searchInsert(nums: number[], target: number): number {
     if(nums[nums.length -1] < target) return nums.length
     for(let i : number = 0; i < nums.length; i ++){
@@ -197,6 +201,8 @@ function searchInsert(nums: number[], target: number): number {
     }
 };
 
+//Given a string s consisting of words and spaces, return the length of the last word in the string.
+// A word is a maximal substring consisting of non-space characters only.
 function lengthOfLastWord(s: string): number {
     let counter: number = 0;
     const length: number = s.length - 1;
@@ -211,6 +217,10 @@ function lengthOfLastWord(s: string): number {
     return counter;
 };
 
+//You are given a large integer represented as an integer array digits,
+// where each digits[i] is the ith digit of the integer.
+// The digits are ordered from most significant to least significant in left-to-right order.
+// The large integer does not contain any leading 0's.
 function plusOne(digits: number[]): number[] {
     let actual_to_string : string =  from_number_array_to_string(digits);
     actual_to_string = addOne(actual_to_string);
@@ -258,6 +268,7 @@ function addOne(s: string) : string {
     return new_string;
 };
 
+//Given two binary strings a and b, return their sum as a binary string.
 function addBinary(a: string, b: string): string {
     let index: number = 0;
     let carrier: boolean = false;
@@ -292,7 +303,6 @@ function addBinary(a: string, b: string): string {
         }
         index = index + 1;
     }
-
     if(a.length > index){
         new_string = sumToString(new_string, a,  carrier, index);
     }
@@ -306,7 +316,6 @@ function addBinary(a: string, b: string): string {
     }
     return new_string
 };
-
 
 function sumToString(new_string: string, s: string, c: boolean, i : number){
     let carrier: boolean = c;
@@ -339,19 +348,26 @@ function sumToString(new_string: string, s: string, c: boolean, i : number){
     return new_string;
 };
 
+//Given a non-negative integer x, compute and return the square root of x.
 function mySqrt(x: number): number {
     const square : number = Math.sqrt(x);
     return Math.trunc(square);
 };
 
+//You are climbing a staircase. It takes n steps to reach the top.
+//
+// Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 function climbStairs(n: number): number {
     return fibonacci(n + 1);
 };
+
 function fibonacci(n: number): number{
     if (n <= 1) return n;
     return fibonacci(n - 1) + fibonacci(n - 2);
 };
 
+//Given the head of a sorted linked list, delete all duplicates such that each
+// element appears only once. Return the linked list sorted as well.
 function deleteDuplicates(head: ListNode | null): ListNode | null {
     let head_aux : ListNode = new ListNode();
     const  nums : number[] = [];
@@ -379,6 +395,7 @@ function deleteDuplicates(head: ListNode | null): ListNode | null {
 
 };
 
+//Given the root of a binary tree, return the inorder traversal of its nodes' values.
 function inorderTraversal(root: TreeNode | null): number[] {
     const nums : number[] = [];
     if(root == null || root.val == null){
@@ -399,6 +416,8 @@ function inorder(nums: number[], root: TreeNode | null): void{
     inorder(nums, root.right);
 };
 
+//Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+// Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
 function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
     if(p == null && q == null) return true;
     if(p == null || q == null) return false;
@@ -406,6 +425,7 @@ function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
     return isSameTree(p.right, q.right) && isSameTree(p.left, q.left);
 };
 
+//Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).
 function isSymmetric(root: TreeNode | null): boolean {
     return isMirror(root, root)
 };
@@ -416,6 +436,7 @@ function isMirror(root1: TreeNode | null, root2: TreeNode | null) : boolean{
     return false;
 };
 
+//Given the root of a binary tree, return its maximum depth.
 function maxDepth(root: TreeNode | null): number {
     if (root == null)
         return 0;
@@ -427,6 +448,7 @@ function maxDepth(root: TreeNode | null): number {
         return (rightDepth + 1);
 };
 
+//Given a binary tree, determine if it is height-balanced.
 function isBalanced(root: TreeNode | null): boolean {
     if(root == null || root.val == null) return true;
     return isBalancedRecursive(root) > 0;
@@ -441,6 +463,7 @@ function isBalancedRecursive(root: TreeNode | null) : number {
     else return Math.max(lh, rh) + 1;
 };
 
+//Given a binary tree, find its minimum depth.
 function minDepth(root: TreeNode | null): number {
     if (root == null) return 0;
     if (root.left == null && root.right == null) return 1;
@@ -449,6 +472,8 @@ function minDepth(root: TreeNode | null): number {
     return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
 };
 
+//Given the root of a binary tree and an integer targetSum,
+// return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
 function hasPathSum(root: TreeNode | null, targetSum: number): boolean {
     if (root == null) return false;
     let ans : boolean= false;
@@ -462,6 +487,7 @@ function hasPathSum(root: TreeNode | null, targetSum: number): boolean {
     }
     return ans;
 };
+
 
 
 
